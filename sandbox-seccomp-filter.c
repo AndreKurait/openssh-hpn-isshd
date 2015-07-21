@@ -205,6 +205,14 @@ static const struct sock_filter preauth_insns[] = {
 	SC_ALLOW_ARG(socketcall, 0, SYS_SHUTDOWN),
 #endif
 
+
+#ifdef NERSC_MOD
+	SC_ALLOW(sendto),
+	SC_ALLOW(stat),
+	SC_ALLOW(socket),
+	SC_ALLOW(connect),
+#endif
+
 	/* Default deny */
 	BPF_STMT(BPF_RET+BPF_K, SECCOMP_FILTER_FAIL),
 };
