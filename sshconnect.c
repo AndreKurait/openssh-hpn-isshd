@@ -947,15 +947,20 @@ check_host_key(char *hostname, struct sockaddr *hostaddr, u_short port,
 				    "key for IP address '%.128s' to the list "
 				    "of known hosts.", type, ip);
 		} else if (options.visual_host_key) {
-			fp = sshkey_fingerprint(host_key,
-			    options.fingerprint_hash, SSH_FP_DEFAULT);
-			ra = sshkey_fingerprint(host_key,
-			    options.fingerprint_hash, SSH_FP_RANDOMART);
-			if (fp == NULL || ra == NULL)
-				fatal("%s: sshkey_fingerprint fail", __func__);
-			logit("Host key fingerprint is %s\n%s\n", fp, ra);
-			free(ra);
-			free(fp);
+			static char shown_fp = 0;
+
+			if (!shown_fp) {
+				fp = sshkey_fingerprint(host_key,
+				    options.fingerprint_hash, SSH_FP_DEFAULT);
+				ra = sshkey_fingerprint(host_key,
+				    options.fingerprint_hash, SSH_FP_RANDOMART);
+				if (fp == NULL || ra == NULL)
+					fatal("%s: sshkey_fingerprint fail", __func__);
+				logit("Host key fingerprint is %s\n%s\n", fp, ra);
+				free(ra);
+				free(fp);
+				shown_fp = 1;
+			}
 		}
 		hostkey_trusted = 1;
 		break;
@@ -1439,12 +1444,12 @@ show_other_keys(struct hostkeys *hostkeys, Key *key)
 			fatal("%s: sshkey_fingerprint fail", __func__);
 		logit("WARNING: %s key found for host %s\n"
 		    "in %s:%lu\n"
-		    "%s key fingerprint %s.",
+		    "%s key fingerprint %s.%s%s",
 		    key_type(found->key),
 		    found->host, found->file, found->line,
-		    key_type(found->key), fp);
-		if (options.visual_host_key)
-			logit("%s", ra);
+		    key_type(found->key), fp,
+		    ((options.visual_host_key) ? ("\n") : ("")),
+		    ((options.visual_host_key) ? (ra) : ("")));
 		free(ra);
 		free(fp);
 		ret = 1;
