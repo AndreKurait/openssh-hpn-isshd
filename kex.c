@@ -853,14 +853,14 @@ kex_choose_conf(struct ssh *ssh)
 		 * -cjr
 		 */
 		if (ctos && !log_flag) {
-			logit("SSH: Server;Ltype: Kex;Remote: %s-%d;Enc: %s;MAC: %s;Comp: %s",
+			debug("SSH: Server;Ltype: Kex;Remote: %s-%d;Enc: %s;MAC: %s;Comp: %s",
 			    ssh_remote_ipaddr(ssh),
 			    ssh_remote_port(ssh),
 			    newkeys->enc.name,
 			    authlen == 0 ? newkeys->mac.name : "<implicit>",
 			    newkeys->comp.name);
+			log_flag = 1;
 		}
-		log_flag = 1;
 	}
 	need = dh_need = 0;
 	for (mode = 0; mode < MODE_MAX; mode++) {
