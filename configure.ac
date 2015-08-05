@@ -2767,30 +2767,9 @@ LIBS="$saved_LIBS"
 ### Configure cryptographic random number support
 
 # Check wheter OpenSSL seeds itself
-if test "x$openssl" = "xyes" ; then
-	AC_MSG_CHECKING([whether OpenSSL's PRNG is internally seeded])
-	AC_RUN_IFELSE(
-		[AC_LANG_PROGRAM([[
-	#include <string.h>
-	#include <openssl/rand.h>
-		]], [[
-		exit(RAND_status() == 1 ? 0 : 1);
-		]])],
-		[
-			OPENSSL_SEEDS_ITSELF=yes
-			AC_MSG_RESULT([yes])
-		],
-		[
-			AC_MSG_RESULT([no])
-		],
-		[
-			AC_MSG_WARN([cross compiling: assuming yes])
-			# This is safe, since we will fatal() at runtime if
-			# OpenSSL is not seeded correctly.
-			OPENSSL_SEEDS_ITSELF=yes
-		]
-	)
-fi
+# This is safe, since all recent OpenSSL versions will
+# complain at runtime if not seeded correctly.
+OPENSSL_SEEDS_ITSELF=yes
 
 # PRNGD TCP socket
 AC_ARG_WITH([prngd-port],
