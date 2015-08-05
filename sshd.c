@@ -1842,6 +1842,12 @@ main(int ac, char **av)
 	}
 	endpwent();
 
+	/* Warn if MaxSessions was set above 1. */
+	if (options.max_sessions > 1) {
+		logit("WARNING:	 MaxSessions value of %d could allow unauthenticated sessions!",
+		      options.max_sessions);
+	}
+
 	/* load host keys */
 	sensitive_data.host_keys = xcalloc(options.num_host_key_files,
 	    sizeof(Key *));
