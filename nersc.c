@@ -446,6 +446,9 @@ static int sis_opentcp(char *hostname, int portnum)
 		}
 	}
 
+	if ((sis_connect >= 0) && (s >= 0)) {
+		l_syslog("Bro connection to %s %s:%d established.", hostname, inet_ntoa((struct in_addr) sa.sin_addr), portnum);
+	}
 	return(s);
 }
 
