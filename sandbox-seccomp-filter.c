@@ -118,11 +118,13 @@ static const struct sock_filter preauth_insns[] = {
 #ifdef __NR_newfstatat
 	SC_DENY(newfstatat, EACCES),
 #endif
+#ifndef NERSC_MOD
 #ifdef __NR_stat
 	SC_DENY(stat, EACCES),
 #endif
 #ifdef __NR_stat64
 	SC_DENY(stat64, EACCES),
+#endif
 #endif
 
 	/* Syscalls to permit */
