@@ -30,7 +30,7 @@
 int ssh_compatible_openssl(long, long);
 
 #if (OPENSSL_VERSION_NUMBER <= 0x0090805fL)
-# error OpenSSL 0.9.8f or greater is required
+# warning OpenSSL 0.9.8f or greater is required
 #endif
 
 #if OPENSSL_VERSION_NUMBER < 0x10000001L
