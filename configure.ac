@@ -2403,7 +2403,7 @@ if test "x$openssl" = "xyes" ; then
 			# Check version is supported.
 			case "$ssl_library_ver" in
 				0090[[0-7]]*|009080[[0-5]]*)
-					AC_MSG_ERROR([OpenSSL >= 0.9.8f required (have "$ssl_library_ver")])
+					AC_MSG_WARN([OpenSSL >= 0.9.8f required (have "$ssl_library_ver")])
 			                ;;
 			        *) ;;
 			esac
