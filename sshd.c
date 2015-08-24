@@ -507,7 +507,7 @@ sshd_exchange_identification(int sock_in, int sock_out)
 	}
 	debug("Client protocol version %d.%d; client software version %.100s",
 	    remote_major, remote_minor, remote_version);
-	logit("SSH: Server;Ltype: Version;Remote: %s-%d;Protocol: %d.%d;Client: %.100s",
+	debug("SSH: Server;Ltype: Version;Remote: %s-%d;Protocol: %d.%d;Client: %.100s",
 	      get_remote_ipaddr(), get_remote_port(),
 	    remote_major, remote_minor, remote_version);
 
@@ -1844,6 +1844,12 @@ main(int ac, char **av)
 		privsep_pw->pw_passwd = xstrdup("*");
 	}
 	endpwent();
+
+	/* Warn if MaxSessions was set above 1. */
+	if (options.max_sessions > 1) {
+		logit("WARNING:	 MaxSessions value of %d could allow unauthenticated sessions!",
+		      options.max_sessions);
+	}
 
 	/* load host keys */
 	sensitive_data.host_keys = xcalloc(options.num_host_key_files,

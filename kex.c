@@ -758,14 +758,14 @@ kex_choose_conf(struct ssh *ssh)
 		/* 2nd sever pass ctos = 1 && log flag = 1 so no log*/
 		/* -cjr*/
 		if (ctos && !log_flag) {
-			logit("SSH: Server;Ltype: Kex;Remote: %s-%d;Enc: %s;MAC: %s;Comp: %s",
+			debug("SSH: Server;Ltype: Kex;Remote: %s-%d;Enc: %s;MAC: %s;Comp: %s",
 			    ssh_get_remote_ipaddr(ssh),
 			    ssh_get_remote_port(ssh),
 			    newkeys->enc.name,
 			    authlen == 0 ? newkeys->mac.name : "<implicit>",
 			    newkeys->comp.name);
+			log_flag = 1;
 		}
-		log_flag = 1;
 	}
 	if ((r = choose_kex(kex, cprop[PROPOSAL_KEX_ALGS],
 	    sprop[PROPOSAL_KEX_ALGS])) != 0) {
