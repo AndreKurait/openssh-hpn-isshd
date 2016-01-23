@@ -101,6 +101,7 @@
 	"ssh-rsa-cert-v01@openssh.com," \
 	HOSTKEY_ECDSA_METHODS \
 	"ssh-ed25519," \
+	"ssh-dss," \
 	"ssh-rsa" \
 
 /* the actual algorithms */
