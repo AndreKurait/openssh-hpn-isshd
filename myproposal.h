@@ -110,7 +110,8 @@
 	"ssh-ed25519," \
 	"rsa-sha2-512," \
 	"rsa-sha2-256," \
-	"ssh-rsa"
+	"ssh-dss," \
+	"ssh-rsa" \
 
 /* the actual algorithms */
 
