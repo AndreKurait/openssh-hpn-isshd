@@ -170,6 +170,7 @@ initialize_server_options(ServerOptions *options)
 	options->tcp_rcv_buf_poll = -1;
 	options->hpn_disabled = -1;
 	options->hpn_buffer_size = -1;
+	options->audit_disabled = -1;
 	options->ip_qos_interactive = -1;
 	options->ip_qos_bulk = -1;
 	options->version_addendum = NULL;
@@ -354,6 +355,8 @@ fill_default_server_options(ServerOptions *options)
 		options->none_enabled = 0;
 	if (options->hpn_disabled == -1)
 		options->hpn_disabled = 0;
+	if (options->audit_disabled == -1)
+		options->audit_disabled = 0;
 
 	if (options->hpn_buffer_size == -1) {
 		/* option not explicitly set. Now we have to figure out */
@@ -461,7 +464,7 @@ typedef enum {
 	sPasswordAuthentication, sKbdInteractiveAuthentication,
 	sListenAddress, sAddressFamily,
 	sPrintMotd, sPrintLastLog, sIgnoreRhosts,
-	sNoneEnabled,
+	sNoneEnabled,sAuditDisabled,
 	sTcpRcvBufPoll, sHPNDisabled, sHPNBufferSize,
 	sX11Forwarding, sX11DisplayOffset, sX11UseLocalhost,
 	sPermitTTY, sStrictModes, sEmptyPasswd, sTCPKeepAlive,
@@ -618,6 +621,7 @@ static struct {
 	{ "authorizedprincipalsfile", sAuthorizedPrincipalsFile, SSHCFG_ALL },
 	{ "noneenabled", sNoneEnabled, SSHCFG_ALL },
 	{ "hpndisabled", sHPNDisabled, SSHCFG_ALL },
+	{ "auditdisabled", sAuditDisabled, SSHCFG_ALL },
 	{ "hpnbuffersize", sHPNBufferSize, SSHCFG_ALL },
 	{ "tcprcvbufpoll", sTcpRcvBufPoll, SSHCFG_ALL },
 	{ "kexalgorithms", sKexAlgorithms, SSHCFG_GLOBAL },
@@ -1245,6 +1249,10 @@ process_server_config_line(ServerOptions *options, char *line,
 
 	case sHPNDisabled:
 		intptr = &options->hpn_disabled;
+		goto parse_flag;
+
+	case sAuditDisabled:
+		intptr = &options->audit_disabled;
 		goto parse_flag;
 
 	case sHPNBufferSize:
